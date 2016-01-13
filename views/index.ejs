@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="/stylesheets/style.css" />
+<script type="text/javascript" src="player.js"></script>
+
+<h1>Liste musicale</h1>
+<div id="mainDiv">
+<% if (musicFileList.length == 0) { %>
+Pas de musique !
+<% } else { %>
+	<audio id="audioPlayer"></audio>
+	<div><%= musicFileList.length %> fichiers enregistrés</div>
+	<% musicFileList.forEach(function(musicFile) { %>
+		<div>
+			<span><%= musicFile.path %></span>
+			<span><button onclick="play('audioPlayer', '<%= musicFile.path %>', this)">Play</button></span>
+		</div> 
+	<% }); %>
+</div>
+<% } %>

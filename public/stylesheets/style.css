@@ -1,0 +1,22 @@
+body {
+  margin-left: auto ;
+  margin-right: auto ;
+  width : 75%;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image:radial-gradient(#ddd, #777);
+}
+
+a {
+  color: #00B7FF;
+}
+
+h1{
+  margin: 20px;
+}
+
+#mainDiv{ 
+  margin: 20px;
+  width: 50%;
+ }
+ 
+ 
