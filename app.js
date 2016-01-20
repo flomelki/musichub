@@ -9,10 +9,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
-// own libs
-require('./modules/prototypes')
-require('./modules/mongo')
-
 // routes definition
 var musicsroutes = require('./routes/musics');
 
