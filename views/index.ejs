@@ -1,5 +1,22 @@
 <link rel="stylesheet" href="/stylesheets/style.css" />
 <script type="text/javascript" src="player.js"></script>
+<script>	
+	function filterByGenre(genre)
+	{
+		var list = document.getElementById('fileList').children;
+		for (i = 0; i < list.length; i++) 
+		{
+			if (list[i].children[0].textContent != genre)
+			{
+				list[i].style.display = "none"
+			}
+			else
+			{
+				list[i].style.display = ""
+			}
+		};
+	}	
+</script>
 
 <h1>Liste musicale</h1>
 <div id="mainDiv">
@@ -7,12 +24,23 @@
 Pas de musique !
 <% } else { %>
 	<audio id="audioPlayer"></audio>
-	<div><%= musicFileList.length %> fichiers enregistrés</div>
-	<% musicFileList.forEach(function(musicFile) { %>
-		<div>
-			<span><%= musicFile.path %></span>
-			<span><button onclick="play('audioPlayer', '<%= musicFile.path %>', this)">Play</button></span>
-		</div> 
+	<div>
+		<ul id="genreList">
+			<% genreList.forEach(function(genre) { %>
+			<li>
+				<button onclick="filterByGenre('<%= genre %>')"><%= genre %></button>
+			</li> 
 	<% }); %>
+		</ul>
+	</div>
+	<ul id="fileList">
+	<% musicFileList.forEach(function(musicFile) { %>
+		<li>
+			<span style="display:none"><%= musicFile.genre %></span>
+			<span><%= musicFile.path %> - <%= musicFile.genre %></span>
+			<span><button onclick="play('audioPlayer', '<%= musicFile.path %>', this)">Play</button></span>
+		</li> 
+	<% }); %>
+	</ul>
 </div>
 <% } %>
