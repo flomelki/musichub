@@ -6,13 +6,23 @@
 <% if (musicFileList.length == 0) { %>
 Pas de musique !
 <% } else { %>
+	<ul>
+		<% genreList.forEach(function(genre) { %>
+		<li>
+			<button onclick="filterByGenre('<%= genre %>')"><%= genre %></button>
+		</li>
+		<% }); %>
+	</ul> 
+
 	<audio id="audioPlayer"></audio>
-	<div><%= musicFileList.length %> fichiers enregistrés</div>
-	<% musicFileList.forEach(function(musicFile) { %>
-		<div>
-			<span><%= musicFile.path %></span>
-			<span><button onclick="play('audioPlayer', '<%= musicFile.path %>', this)">Play</button></span>
-		</div> 
-	<% }); %>
+	<ul id="musicList">
+		<% musicFileList.forEach(function(musicFile) { %>
+			<li>
+				<span style="display:none"><%= musicFile.genre %></span>
+				<span><%= musicFile.path %></span>
+				<span><button onclick="play('audioPlayer', '<%= musicFile.path %>', this)">Play</button></span>
+			</li> 
+		<% }); %>
+	</ul>
 </div>
 <% } %>

@@ -12,3 +12,18 @@ function play(idPlayer, path, control) {
     }*/
 }
 
+function filterByGenre(genre)
+{
+    var musicList = document.getElementById('musicList');
+	for(i = 0; i < musicList.children.length; i++)
+	{
+		if (musicList.children[i].children[0].innerHTML != genre)
+		{
+			musicList.children[i].style.display = "none"
+		}
+		else
+		{
+			musicList.children[i].style.display = ""
+		}
+	}
+}
