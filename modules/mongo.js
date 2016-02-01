@@ -1,15 +1,15 @@
-// files management
 var recursive = require('recursive-readdir');
 var mongoose = require('mongoose');
 var path = require('path');
 var mm = require('musicmetadata')
-var fs = require('fs')
-
-console.log('go on')
+var FileQueue = require('filequeue')
+var fq = new FileQueue(1024)
+var Promise = require('promise')
 
 var musicSchema = mongoose.Schema({
   path : {type : String, required: true},
-  genre : {type: String, required: true}
+  genre : {type: String, required: true},
+  img: { data: Buffer, contentType: String }
 });
 
 Music = mongoose.model("Music", musicSchema);
@@ -17,27 +17,74 @@ Music = mongoose.model("Music", musicSchema);
 var authExt = ['.mp3', '.ogg'];
 
 mongoose.connect("mongodb://localhost/musicalBase", function(){
-    // Drop the DB 
-    mongoose.connection.db.dropDatabase();
-    
-    recursive('musicFiles', function (err, files) {
-      files = files.filter(function(file)
+  Music.count(function(err, count)
+  {
+      if (count == 0 || true)
       {
-        var ext = path.extname(file);
-        return authExt.contains(ext);
-      })
-      
-      files.forEach(function(file)
+        console.log('db reset')
+        dbReset();
+      }
+  });
+});
+
+function dbReset()
+{
+  mongoose.connection.db.dropDatabase();
+  
+  recursive('musicFiles', function (err, files) {
+    if (err)
+    {
+      console.log('Error during files reading - ' + err)
+      return;
+    }
+    
+    files = files.filter(function(file)
+    {
+      var ext = path.extname(file);
+      return authExt.contains(ext);
+    })
+    
+    var promises = [];
+    
+    files.forEach(function(file)
+    {
+      var p = new Promise(function(resolve, reject)
       {
         var filePath = file.split('\\').splice(1).join('/');
-        mm(fs.createReadStream(file), function(err, metadata)
+        mm(fq.createReadStream(file), function(err, metadata)
         {
-          Music.create({path:filePath, genre:metadata.genre}, function(err, musicFile)
+          var music = new Music
+          music.path = filePath
+          music.genre = (metadata.genre != null && metadata.genre != '' ? metadata.genre : '(empty)')
+          if (metadata.picture.length > 0)
+          {
+            music.img.data = metadata.picture[0].data
+            music.img.contentType = 'image/' + metadata.picture[0].format
+          }
+  
+          music.save(function(err, musicFile)
           {
             if (err)
-              console.log(err);
+            {
+              reject('Error during mongoDb music file save ' + filePath + ' - ' + err);
+            }
+            else
+            {
+              resolve(filePath)
+            }
           });
-        });
+        });      
       });
+      promises.push(p);
     });
-});
+    
+    Promise.all(promises).then(function(valeur) {
+      console.log("Db init completed");
+    }, function(raison) {
+      console.log(raison)
+    });    
+    
+  });
+  
+
+}

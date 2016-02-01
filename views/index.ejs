@@ -8,7 +8,7 @@ Pas de musique !
 <% } else { %>
 	<ul>
 		<% genreList.forEach(function(genre) { %>
-		<li>
+		<li style="display: inline">
 			<button onclick="filterByGenre('<%= genre %>')"><%= genre %></button>
 		</li>
 		<% }); %>

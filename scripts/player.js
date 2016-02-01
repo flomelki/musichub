@@ -15,7 +15,7 @@ function play(idPlayer, path, control) {
 function filterByGenre(genre)
 {
     var musicList = document.getElementById('musicList');
-	for(i = 0; i < musicList.children.length; i++)
+	for(var i = 0; i < musicList.children.length; i++)
 	{
 		if (musicList.children[i].children[0].innerHTML != genre)
 		{
