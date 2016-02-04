@@ -1,15 +1,9 @@
-function play(idPlayer, path, control) {
+function play(idPlayer, path) {
+	path = path.replace('&#39;', "'")
     var player = document.getElementById(idPlayer);
+	player.title = path;
 	player.src = path;
 	player.play();
-	
-    /*if (player.paused) {
-        player.play();
-        //control.textContent = 'Pause';
-    } else {
-        player.pause();	
-        //control.textContent = 'Play';
-    }*/
 }
 
 function filterByGenre(genre)
@@ -27,3 +21,4 @@ function filterByGenre(genre)
 		}
 	}
 }
+

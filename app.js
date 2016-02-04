@@ -16,6 +16,9 @@ require('./modules/mongo')
 // routes definition
 var musicsroutes = require('./routes/musics');
 
+// global variables
+ISDEBUG = false
+
 // GO
 var app = express();
 
@@ -33,6 +36,7 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'forms')));
 app.use(express.static(path.join(__dirname, 'scripts')));
+app.use(express.static(path.join(__dirname, 'modules')));
 app.use(express.static(path.join(__dirname, 'musicFiles')));
 
 app.use('/', musicsroutes);

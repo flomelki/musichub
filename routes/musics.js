@@ -4,7 +4,7 @@ var router = express.Router();
 
 // client list
 router.get('/', function(req, res) {
-  Music.find(function(err, musicFileList)
+  Music.find().sort({'path' : 1}).exec(function(err, musicFileList)
   {
       var genreList = []
       musicFileList.forEach(function(element)
@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
         }
       });
       
-      res.render('index', {musicFileList : musicFileList, genreList : genreList});
+      res.render('index', {musicFileList : musicFileList, genreList : genreList.sort()});
   });
 
 });

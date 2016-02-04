@@ -3,8 +3,9 @@ var mongoose = require('mongoose');
 var path = require('path');
 var mm = require('musicmetadata')
 var FileQueue = require('filequeue')
-var fq = new FileQueue(1024)
+var fq = new FileQueue(1024)  // max number of open files. Beyond this limit, EMFILE exception will occur
 var Promise = require('promise')
+var common = require('./common')
 
 var musicSchema = mongoose.Schema({
   path : {type : String, required: true},
@@ -19,7 +20,7 @@ var authExt = ['.mp3', '.ogg'];
 mongoose.connect("mongodb://localhost/musicalBase", function(){
   Music.count(function(err, count)
   {
-      if (count == 0 || true)
+      if (count == 0 || ISDEBUG)
       {
         console.log('db reset')
         dbReset();
@@ -44,8 +45,8 @@ function dbReset()
       return authExt.contains(ext);
     })
     
-    var promises = [];
-    
+    // use of promises in order to be able to check when all the files are processed
+    var promises = [];    
     files.forEach(function(file)
     {
       var p = new Promise(function(resolve, reject)
@@ -54,7 +55,7 @@ function dbReset()
         mm(fq.createReadStream(file), function(err, metadata)
         {
           var music = new Music
-          music.path = filePath
+          music.path = common.htmlEncode(filePath)
           music.genre = (metadata.genre != null && metadata.genre != '' ? metadata.genre : '(empty)')
           if (metadata.picture.length > 0)
           {

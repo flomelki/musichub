@@ -14,13 +14,13 @@ Pas de musique !
 		<% }); %>
 	</ul> 
 
-	<audio id="audioPlayer"></audio>
-	<ul id="musicList">
+	<audio id="audioPlayer" controls></audio>
+	<ul id="musicList" >
 		<% musicFileList.forEach(function(musicFile) { %>
-			<li>
+			<li class="liMusicFile">
 				<span style="display:none"><%= musicFile.genre %></span>
-				<span><%= musicFile.path %></span>
-				<span><button onclick="play('audioPlayer', '<%= musicFile.path %>', this)">Play</button></span>
+				<span><%- musicFile.path %></span>
+				<span><button class="btnPlay" onclick="play('audioPlayer', '<%= musicFile.path %>')">Play</button></span>
 			</li> 
 		<% }); %>
 	</ul>

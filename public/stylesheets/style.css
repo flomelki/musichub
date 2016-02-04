@@ -16,7 +16,15 @@ h1{
 
 #mainDiv{ 
   margin: 20px;
-  width: 50%;
+  width: 100%;
  }
  
+ .btnPlay{
+   float: right
+ }
+ 
+ .liMusicFile
+{
+  height: 22px
+}
  
