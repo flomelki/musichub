@@ -1,5 +1,5 @@
 function play(idPlayer, path) {
-	path = path.replace('&#39;', "'")
+	path = htmlDecode(path)
     var player = document.getElementById(idPlayer);
 	player.title = path;
 	player.src = path;

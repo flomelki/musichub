@@ -5,7 +5,6 @@ var mm = require('musicmetadata')
 var FileQueue = require('filequeue')
 var fq = new FileQueue(1024)  // max number of open files. Beyond this limit, EMFILE exception will occur
 var Promise = require('promise')
-var common = require('./common')
 
 var musicSchema = mongoose.Schema({
   path : {type : String, required: true},
@@ -55,7 +54,7 @@ function dbReset()
         mm(fq.createReadStream(file), function(err, metadata)
         {
           var music = new Music
-          music.path = common.htmlEncode(filePath)
+          music.path = htmlEncode(filePath)
           music.genre = (metadata.genre != null && metadata.genre != '' ? metadata.genre : '(empty)')
           if (metadata.picture.length > 0)
           {

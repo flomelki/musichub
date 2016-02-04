@@ -10,14 +10,15 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
 // Owns modules
-require('./modules/prototypes')
+require('./common/prototypes')
+require('./common/common')
 require('./modules/mongo')
 
 // routes definition
 var musicsroutes = require('./routes/musics');
 
 // global variables
-ISDEBUG = false
+ISDEBUG = true
 
 // GO
 var app = express();
@@ -36,7 +37,7 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'forms')));
 app.use(express.static(path.join(__dirname, 'scripts')));
-app.use(express.static(path.join(__dirname, 'modules')));
+app.use(express.static(path.join(__dirname, 'common')));
 app.use(express.static(path.join(__dirname, 'musicFiles')));
 
 app.use('/', musicsroutes);
