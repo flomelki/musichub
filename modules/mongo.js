@@ -12,14 +12,29 @@ var musicSchema = mongoose.Schema({
   img: { data: Buffer, contentType: String }
 });
 
+var fromToSchema = mongoose.Schema({
+    from : {type : String, required: true},
+    to : {type: String, required: true},
+    number : {type : Number, required: true, default: 0}
+})
+
+var genreSchema = mongoose.Schema({
+    genre : {type : String, required: true},
+    number : {type : Number, required: true, default: 0}
+})
+
+console.log('Db initializing')
 Music = mongoose.model("Music", musicSchema);
+FromTo = mongoose.model("FromTo", fromToSchema);
+Genre = mongoose.model("Genre", genreSchema);  
 
 var authExt = ['.mp3', '.ogg'];
 
 mongoose.connect("mongodb://localhost/musicalBase", function(){
   Music.count(function(err, count)
   {
-      if (count == 0 || ISDEBUG)
+      console.log('Number of music files ' + count)
+      if (count === 0 || ISDEBUG)
       {
         console.log('db reset')
         dbReset();
@@ -85,6 +100,4 @@ function dbReset()
     });    
     
   });
-  
-
 }

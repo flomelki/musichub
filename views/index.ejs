@@ -3,6 +3,10 @@
 <script type="text/javascript" src="prototypes.js"></script>
 <script type="text/javascript" src="player.js"></script>
 
+<!-- gloval variables to keep tracking -->
+<input type="hidden" id="previousGenre" />
+<input type="hidden" id="currentGenre" />
+
 <h1>Liste musicale</h1>
 <div id="mainDiv">
 <% if (musicFileList.length == 0) { %>
@@ -11,7 +15,12 @@ Pas de musique !
 	<ul>
 		<% genreList.forEach(function(genre) { %>
 		<li style="display: inline">
-			<button onclick="filterByGenre('<%= genre %>')"><%= genre %></button>
+            <span>
+                <form style="display:inline;" action="/fromtogenre" method="POST">
+                    <input type="hidden" id='trackingGenreTag_<%= genre %>' name='fromto' value='' />
+                    <input onclick="filterByGenre('<%= genre %>', 'trackingGenreTag_<%= genre %>', this)" type="submit" value="<%= genre %>" />
+                </form>
+            </span>
 		</li>
 		<% }); %>
 	</ul> 
@@ -22,7 +31,12 @@ Pas de musique !
 			<li class="liMusicFile">
 				<span style="display:none"><%= musicFile.genre %></span>
 				<span><%- musicFile.path %></span>
-				<span><button class="btnPlay" onclick="play('audioPlayer', '<%= musicFile.path %>')">Play</button></span>
+                <span class="btnPlay">
+                    <form style="display:inline;" action="/genre" method="POST">
+                        <input type="hidden" name="genre" value='<%= musicFile.genre %>' />
+                        <input onclick="play('audioPlayer', '<%= musicFile.path %>')"" type="submit" value="Play" />
+                    </form>
+                </span>
 			</li> 
 		<% }); %>
 	</ul>
