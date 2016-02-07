@@ -22,12 +22,12 @@ router.get('/', function(req, res) {
 });
 
 
-router.post('/fromtogenre', function(req, res)
+router.post('/fromtogenre', function(req, postres)
 {
     console.log('POST fromtogenre')
-    if (req.body.fromto)
+    var fromto = req.body;
+    if (fromto.from && fromto.to)
     {
-        var fromto = JSON.parse(req.body.fromto);
         console.log(fromto.from);
         console.log(fromto.to);
         if (fromto.from === fromto.to)  return;
@@ -40,16 +40,16 @@ router.post('/fromtogenre', function(req, res)
             {
                 if (err) return handleError(err);
                 console.log('Updated fromtos collection');
+                postres.end();
             });
         });
     }
 });
 
-router.post('/genre', function(req, res)
-{
+router.post('/genre', function(req, postres)
+{    
     var genre = req.body.genre;
     console.log('POST genre')
-    console.log(genre)
     if (!genre) return;
     Genre.findOne({'genre' : genre}, 'number', function(err, res)
     {
@@ -60,6 +60,7 @@ router.post('/genre', function(req, res)
         {
             if (err) return handleError(err);
             console.log('Updated genres collection - Genre ' + genre + ' listened ' + nb + 'times');
+            postres.end();
         })
     })
 });
