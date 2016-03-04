@@ -1,12 +1,43 @@
-/* global setRequestHeader */
-function play(idPlayer, path, genre) {
+
+function play(path, genre) {
     sendData(JSON.stringify({genre : genre}), 'genre');
     
 	path = htmlDecode(path);
-    var player = document.getElementById(idPlayer);
+    var player = document.getElementById('audioPlayer');
+    
+    // event that plays next song if there's one
+    player.onended = function()
+    {
+        var currentGenreInput = document.getElementById('currentGenre');
+        var currentGenre = "";
+        if (currentGenreInput.value)
+        {
+            currentGenre = currentGenreInput.value;
+        }
+        var musicList = document.getElementById('musicList');
+        var found = false, isPlaying = false;
+        var i = 0;
+        
+        while(i < musicList.children.length && (!found || !isPlaying))
+        {
+            if (found && (currentGenre == "" || musicList.children[i].children[0].innerHTML == currentGenre) && musicList.children[i].style.display == "")
+            {
+                isPlaying = true;
+                play(musicList.children[i].children[1].innerHTML, musicList.children[i].children[0].innerHTML);
+            }            
+            
+            if (musicList.children[i].children[1].innerHTML == path)
+            {
+                found = true;
+            }
+            i++;
+        }
+    };
+    
 	player.title = path;
 	player.src = path;
 	player.play();
+    
 }
 
 function filterByGenre(genre, current)
@@ -35,7 +66,9 @@ function filterByGenre(genre, current)
 		{
 			musicList.children[i].style.display = ""
 		}
-	}
+	}  
+
+});
     
     if (previousGenreInput.value)   document.getElementById(previousGenreInput.value).disabled = false;
     current.disabled = true;
