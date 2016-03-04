@@ -66,9 +66,9 @@ function filterByGenre(genre, current)
 		{
 			musicList.children[i].style.display = ""
 		}
-	}  
+	}
+    
 
-});
     
     if (previousGenreInput.value)   document.getElementById(previousGenreInput.value).disabled = false;
     current.disabled = true;
