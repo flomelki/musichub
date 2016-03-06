@@ -16,12 +16,12 @@ var fromToSchema = mongoose.Schema({
     from : {type : String, required: true},
     to : {type: String, required: true},
     number : {type : Number, required: true, default: 0}
-})
+});
 
 var genreSchema = mongoose.Schema({
     genre : {type : String, required: true},
     number : {type : Number, required: true, default: 0}
-})
+});
 
 console.log('Db initializing')
 Music = mongoose.model("Music", musicSchema);

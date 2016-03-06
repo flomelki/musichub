@@ -5,19 +5,22 @@ var router = express.Router();
 // client list
 router.get('/', function(req, res) {
     console.log('loading...')
-  Music.find().sort({'path' : 1}).exec(function(err, musicFileList)
+    
+  Music.find().distinct("genre").exec(function(err, genreList)
   {
-      console.log('Found smthg...')
-      var genreList = []
-      musicFileList.forEach(function(element)
-      {
-        if (!genreList.contains(element.genre))
+    genreList.sort();
+    Music.find().sort({'path' : 1}).exec(function(err, musicFileList)
+    {
+        console.log('Found smthg...')
+        var jsonGenreList = []
+        jsonGenreList.push({"genre" : "", "display" : "All"})
+        genreList.forEach(function(genre)
         {
-          genreList.push(element.genre)
-        }
-      });
-      console.log('Pushed...')
-      res.render('index', {musicFileList : musicFileList, genreList : genreList.sort()});
+            jsonGenreList.push({"genre" : genre, "display" : genre});
+        });
+        console.log('Pushed...')
+        res.render('index', {musicFileList : musicFileList, genreList : jsonGenreList});
+    });      
   });
 });
 

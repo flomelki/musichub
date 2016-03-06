@@ -23,10 +23,10 @@ function play(path, genre) {
             if (found && (currentGenre == "" || musicList.children[i].children[0].innerHTML == currentGenre) && musicList.children[i].style.display == "")
             {
                 isPlaying = true;
-                play(musicList.children[i].children[1].innerHTML, musicList.children[i].children[0].innerHTML);
+                play(musicList.children[i].children[2].innerHTML, musicList.children[i].children[0].innerHTML);
             }            
             
-            if (musicList.children[i].children[1].innerHTML == path)
+            if (musicList.children[i].children[2].innerHTML == path)
             {
                 found = true;
             }
@@ -40,7 +40,7 @@ function play(path, genre) {
     
 }
 
-function filterByGenre(genre, current)
+function filterByGenre(genre, display, current)
 {
     // tracking
     var previousGenreInput = document.getElementById('previousGenre');
@@ -50,26 +50,28 @@ function filterByGenre(genre, current)
         previousGenreInput.value = currentGenreInput.value;
         sendData(JSON.stringify({
             "from" : previousGenreInput.value,
-            "to" : genre}), 'fromtogenre');
+            "to" : display}), 'fromtogenre');
     }
-    currentGenreInput.value = genre;    
+    currentGenreInput.value = display;    
     
     // display
+    var displayedList = [];
+    var noneList = [];
     var musicList = document.getElementById('musicList');
 	for(var i = 0; i < musicList.children.length; i++)
 	{
-		if (musicList.children[i].children[0].innerHTML != genre)
+		if (musicList.children[i].children[0].innerHTML == genre || genre == "")
 		{
-			musicList.children[i].style.display = "none"
+            displayedList.push(musicList.children[i]);
 		}
 		else
 		{
-			musicList.children[i].style.display = ""
+            noneList.push(musicList.children[i]);
 		}
 	}
     
+    updateUI(displayedList, noneList);
 
-    
     if (previousGenreInput.value)   document.getElementById(previousGenreInput.value).disabled = false;
     current.disabled = true;
 }
@@ -92,4 +94,26 @@ function sendData(data, url) {
 
     XHR.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     XHR.send(data);
+}
+
+function updateUI(displayedList, noneList)
+{
+    if (displayedList != null && displayedList.length > 0)
+    {
+        d3.selectAll(displayedList).transition().duration(500)
+            .style('opacity', 1)
+            .style('display', '')
+            .style("color", function(d, i) { return i % 2 ? "#111" : "#333"; });
+    }
+    else
+    {
+        d3.select('#musicList').selectAll('li').style("color", function(d, i) { return i % 2 ? "#111" : "#333"; });
+    }
+    
+    if (noneList != null && noneList.length > 0)
+    {
+        d3.selectAll(noneList).transition().duration(500)
+            .style('opacity', 0)
+            .style('display', 'none');
+    }    
 }

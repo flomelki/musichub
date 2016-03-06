@@ -1,14 +1,19 @@
 <link rel="stylesheet" href="/stylesheets/style.css" />
+
 <script type="text/javascript" src="common.js"></script>
 <script type="text/javascript" src="prototypes.js"></script>
 <script type="text/javascript" src="player.js"></script>
 <script type="text/javascript" src="d3.min.js"></script>
 
+<script type="text/javascript">
+    window.onload = function () { updateUI(); }
+</script>
+
+
 <!-- gloval variables to keep tracking -->
 <input type="hidden" id="previousGenre" />
 <input type="hidden" id="currentGenre" />
 
-<h1>Liste musicale</h1>
 <div id="mainDiv">
 <% if (musicFileList.length == 0) { %>
 Pas de musique !
@@ -17,19 +22,19 @@ Pas de musique !
 		<% genreList.forEach(function(genre) { %>
 		<li style="display: inline">
             <span>
-                <button id='<%= genre %>' onclick="filterByGenre('<%= genre %>', this)"><%= genre %></button>
+                <button id='<%= genre.display %>' onclick="filterByGenre('<%= genre.genre %>', '<%= genre.display %>', this)"><%= genre.display %></button>
             </span>
 		</li>
 		<% }); %>
 	</ul> 
 
 	<audio id="audioPlayer" controls></audio>
-	<ul id="musicList" >
+	<ul id="musicList" class="musicList">
 		<% musicFileList.forEach(function(musicFile) { %>
 			<li id="<%= musicFile.path %>" class="liMusicFile">
 				<span style="display:none"><%= musicFile.genre %></span>
-				<span><%- musicFile.path %></span>
-                <span><button class="btnPlay" onclick="play('<%= musicFile.path %>', '<%= musicFile.genre %>')">Play</button></span>
+                <button class="btnPlay" onclick="play('<%= musicFile.path %>', '<%= musicFile.genre %>')"></button>
+				<span class="pathMusicFile"><%- musicFile.path %></span>
 			</li>
 		<% }); %>
 	</ul>
