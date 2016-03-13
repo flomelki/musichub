@@ -17,17 +17,19 @@ function play(path, genre) {
         var musicList = document.getElementById('musicList');
         var found = false, isPlaying = false;
         var i = 0;
-        
+        console.log(musicList.children.length)
         while(i < musicList.children.length && (!found || !isPlaying))
         {
             if (found && (currentGenre == "" || musicList.children[i].children[0].innerHTML == currentGenre) && musicList.children[i].style.display == "")
             {
+                console.log('new play !!')
                 isPlaying = true;
-                play(musicList.children[i].children[2].innerHTML, musicList.children[i].children[0].innerHTML);
+                play(musicList.children[i].children[1].innerHTML, musicList.children[i].children[0].innerHTML);
             }            
             
-            if (musicList.children[i].children[2].innerHTML == path)
+            if (musicList.children[i].children[1].innerHTML == path)
             {
+                console.log('found !!')
                 found = true;
             }
             i++;
@@ -100,14 +102,16 @@ function updateUI(displayedList, noneList)
 {
     if (displayedList != null && displayedList.length > 0)
     {
-        d3.selectAll(displayedList).transition().duration(500)
+        d3.selectAll(displayedList).transition()
+            .duration(500)
             .style('opacity', 1)
-            .style('display', '')
-            .style("color", function(d, i) { return i % 2 ? "#111" : "#333"; });
+            .style("color", function(d, i) { return i % 2 ? "#111" : "#333"; })
+            .style('display', '');
     }
     else
     {
-        d3.select('#musicList').selectAll('li').style("color", function(d, i) { return i % 2 ? "#111" : "#333"; });
+        d3.select('#musicList').selectAll('li')
+            .style("color", function(d, i) { return i % 2 ? "#111" : "#333"; })
     }
     
     if (noneList != null && noneList.length > 0)

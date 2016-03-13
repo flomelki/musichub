@@ -33,8 +33,11 @@ Pas de musique !
 		<% musicFileList.forEach(function(musicFile) { %>
 			<li id="<%= musicFile.path %>" class="liMusicFile">
 				<span style="display:none"><%= musicFile.genre %></span>
+                <span style="display:none"><%- musicFile.path %></span>
                 <button class="btnPlay" onclick="play('<%= musicFile.path %>', '<%= musicFile.genre %>')"></button>
-				<span class="pathMusicFile"><%- musicFile.path %></span>
+                <span class="artistMusicFile"><%= musicFile.artist %></span>
+                <span class="albumMusicFile"><%= musicFile.album %></span>
+                <span class="titleMusicFile"><%= musicFile.title %></span>
 			</li>
 		<% }); %>
 	</ul>

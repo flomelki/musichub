@@ -9,8 +9,10 @@ router.get('/', function(req, res) {
   Music.find().distinct("genre").exec(function(err, genreList)
   {
     genreList.sort();
-    Music.find().sort({'path' : 1}).exec(function(err, musicFileList)
+    Music.find().sort({'album' : 1, 'title' : 1}).exec(function(err, musicFileList)
     {
+        if (err)    throw err;
+        
         console.log('Found smthg...')
         var jsonGenreList = []
         jsonGenreList.push({"genre" : "", "display" : "All"})
@@ -19,6 +21,7 @@ router.get('/', function(req, res) {
             jsonGenreList.push({"genre" : genre, "display" : genre});
         });
         console.log('Pushed...')
+        
         res.render('index', {musicFileList : musicFileList, genreList : jsonGenreList});
     });      
   });

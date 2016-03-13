@@ -8,9 +8,13 @@ var Promise = require('promise')
 
 var musicSchema = mongoose.Schema({
   path : {type : String, required: true},
+  artist : { type : String, required : true},
+  album : { type : String, required : true},
+  title : { type : String, required : true},
   genre : {type: String, required: true},
   img: { data: Buffer, contentType: String }
 });
+musicSchema.index({'album' : 1, 'title' : 1});
 
 var fromToSchema = mongoose.Schema({
     from : {type : String, required: true},
@@ -44,7 +48,14 @@ mongoose.connect("mongodb://localhost/musicalBase", function(){
 
 function dbReset()
 {
-  mongoose.connection.db.dropDatabase();
+    //mongoose.connection.db.dropDatabase();
+    Music.remove(function(err, p){
+        if(err){    throw err;    } 
+        else
+        {
+            console.log('No Of Documents deleted:' + p);
+        }
+    });
   
   recursive('musicFiles', function (err, files) {
     if (err)
@@ -70,7 +81,10 @@ function dbReset()
         {
           var music = new Music
           music.path = htmlEncode(filePath)
-          music.genre = (metadata.genre != null && metadata.genre != '' ? metadata.genre : '(empty)')
+          music.genre = nullorempty(metadata.genre, '(empty)')
+          music.album = nullorempty(metadata.album, '(empty)')
+          music.artist = nullorempty(metadata.artist, '(empty)')
+          music.title = nullorempty(metadata.title, '(empty)')
           if (metadata.picture.length > 0)
           {
             music.img.data = metadata.picture[0].data
@@ -100,4 +114,9 @@ function dbReset()
     });    
     
   });
+}
+
+function nullorempty(s, def)
+{
+   return s != null && s != '' ? s : def;
 }
