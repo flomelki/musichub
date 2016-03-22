@@ -27,7 +27,22 @@ router.get('/', function(req, res) {
   });
 });
 
+// visualisation
+router.get('/visu1', function(req, res)
+{
+    Genre.find().exec(function(err, genreList)
+    {
+        var jsonGenreList = [];
+        genreList.forEach(function(g)
+        {
+           jsonGenreList.push({'genre' : g.genre, 'number' : g.number}); 
+        });
+        res.render('visu1', {data : JSON.stringify(jsonGenreList)});
+    });
+});
 
+
+// tracking
 router.post('/fromtogenre', function(req, postres)
 {
     console.log('POST fromtogenre')
