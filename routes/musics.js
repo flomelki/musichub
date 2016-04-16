@@ -41,6 +41,31 @@ router.get('/visu1', function(req, res)
     });
 });
 
+router.get('/visu2', function(req, res)
+{
+    Genre.find().exec(function(err, genreList)
+    {
+        var jsonGenreList = [];
+        genreList.forEach(function(g)
+        {
+           jsonGenreList.push({'genre' : g.genre, 'number' : g.number}); 
+        });
+        res.render('visu2', {data : JSON.stringify(jsonGenreList)});
+    });
+});
+
+router.get('/visu3', function(req, res)
+{
+    Genre.find().exec(function(err, genreList)
+    {
+        var jsonGenreList = [];
+        genreList.forEach(function(g)
+        {
+           jsonGenreList.push({'genre' : g.genre, 'number' : g.number}); 
+        });
+        res.render('visu3', {data : JSON.stringify(jsonGenreList)});
+    });
+});
 
 // tracking
 router.post('/fromtogenre', function(req, postres)
