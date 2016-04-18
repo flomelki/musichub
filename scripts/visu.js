@@ -145,7 +145,7 @@ function visu2(jsonData)
         .attr("dy", "30")
         .append("textPath")
         .attr("xlink:href",function(d,i){return "#s"+i;})
-        .attr("startOffset",function(d,i){return 0.15;})     
+        .attr("startOffset",function(d,i){return "15%";})     
         .text(function(d) { 
             if (parseInt(d.data.number) > (total * 0.05) )
             {return d.data.genre;}
@@ -228,7 +228,7 @@ var color = d3.scale.linear()
         .attr("dy", "17")
         .append("textPath")
         .attr("xlink:href",function(d,i){return "#s"+i;})
-        .attr("startOffset",function(d,i){return 0.2;})     
+        .attr("startOffset",function(d,i){return "15%";})     
         .text(function(d) { 
         if (parseInt(d.data.number) > total * 0.005 )
             {return d.data.genre;}
